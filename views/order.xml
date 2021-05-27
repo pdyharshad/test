@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+        <menuitem id="hotel_menu_restaurant"
+            name="Restaurant"
+            sequence="2" parent="hotel_management.hotel_menu_root"/>
+          <record id="view_order_form" model="ir.ui.view">
+            <field name="name">hotel.order.form</field>
+            <field name="model">restaurant.order</field>
+            <field name="arch" type="xml">
+              <form string="Order">
+                <header>
+                  <button type="object" name="set_new" string="Set to Draft"/>
+                  <button type="object" name="duplicate_order" string="Duplicate Order"/>
+                  <field name="state" widget="statusbar" clickable="1"/>
+                </header>
+                <sheet>
+                  <group>
+                    <group>
+                      <field name="dish" string="Dish"/>
+                      <field name="quantity" string="Quantity"/>
+                      <field name="price" string="Price"/>
+                    </group>
+                    <group>
+                      <field name="total" string="Total" 
+                        attrs="{'readonly':[('quantity','&gt;',0)],
+                        'invisible':[('quantity','=',0)],
+                        'required':[('price','&lt;',250)]}"/>
+                      <field name="waiter_id" string="Waiter"/>
+                    </group>
+                  </group>
+
+                </sheet>
+              </form>
+            </field>
+          </record>
+          <record id="view_order_list" model="ir.ui.view">
+            <field name="name">view.order.list</field>
+            <field name="model">restaurant.order</field>
+            <field name="arch" type="xml">
+              <tree>
+                <field name="dish" string="Dish"/>
+                <field name="quantity" string="Quantity"/>
+                <field name="price" string="Price"/>
+                <field name="total" string="Total"/>
+                <field name="waiter_id" string="Waiter"/>
+                <field name="state" string="State"/>
+              </tree>
+            </field>
+          </record>
+        <record id="action_order" model="ir.actions.act_window">
+            <field name="name">Order</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">restaurant.order</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <record id="action_view_order_tree" model="ir.actions.act_window.view">
+            <field name="sequence" eval="1"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="hotel_management.view_order_list"/>
+            <field name="act_window_id" ref="action_order"/>
+          </record>
+        <record id="action_view_order_form" model="ir.actions.act_window.view">
+            <field name="sequence" eval="1"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="hotel_management.view_order_form"/>
+            <field name="act_window_id" ref="action_order"/>
+          </record>
+
+
+
+        <menuitem id="menu_restaurant_order"
+          name="Orders"
+          parent="hotel_management.hotel_menu_restaurant"
+          action="hotel_management.action_order"
+          />
+    
+</odoo>
