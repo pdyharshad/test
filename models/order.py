@@ -1,15 +1,14 @@
 from odoo import models,fields,api
 from odoo.exceptions import RedirectWarning, UserError, ValidationError, AccessError
 
-class RestaurantOrder(models.Model):
-    _name='restaurant.order'
+class RestaurantOrderLine(models.Model):
+    _name='restaurant.orderline'
 
     dish=fields.Char('Dish')
     quantity=fields.Integer('Quantity')
     price=fields.Float('Price', default=100)
     total=fields.Float('Total')
-    waiter_id=fields.Many2one('hotel.person',string='Waiter',
-            domain=[('person_type','=','waiter')])
+    order_id=fields.Many2one('restaurant.order', string='Order')
     state=fields.Selection([('new','New'),
                             ('kitchen','Kitchen'),
                             ('in_process','In Process'),
@@ -25,7 +24,7 @@ class RestaurantOrder(models.Model):
         price=vals.get('price',0)
         vals.update({'total': qty*price})
         print('vals 2nd time',vals)
-        return super(RestaurantOrder, self).create(vals)
+        return super(RestaurantOrderLine, self).create(vals)
     
     def write(self,vals):
         print('self', self)
@@ -48,7 +47,7 @@ class RestaurantOrder(models.Model):
 
             vals.update({'total':qty*price})
         print(vals)
-        return super(RestaurantOrder,self).write(vals)
+        return super(RestaurantOrderLine,self).write(vals)
     
     def unlink(self):
         print(self)
@@ -56,7 +55,7 @@ class RestaurantOrder(models.Model):
             if order.state in ['ready','delivered','bill']:
                 raise ValidationError('You cannot delete an order once it is\
                 processed')
-        return super(RestaurantOrder,self).unlink()
+        return super(RestaurantOrderLine,self).unlink()
 
     def set_new(self):
         vals={'state':'new'} 
@@ -79,4 +78,11 @@ class RestaurantOrder(models.Model):
         return res
         
 
+class RestaurantOrder(models.Model):
+    _name='restaurant.order'
 
+    customer=fields.Char('Customer')
+    waiter_id=fields.Many2one('hotel.person',string='Waiter',
+            domain=[('person_type','=','waiter')])
+    order_line=fields.One2many('restaurant.orderline','order_id',string='OrderLines')
+    order_total=fields.Float('Order Total')
