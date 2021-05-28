@@ -86,3 +86,12 @@ class RestaurantOrder(models.Model):
             domain=[('person_type','=','waiter')])
     order_line=fields.One2many('restaurant.orderline','order_id',string='OrderLines')
     order_total=fields.Float('Order Total')
+
+    def calculate_total_order(self):
+        total=0
+        print(self.order_line)
+        for line in self.order_line:
+            total+=line.total
+        self.write({'order_total':total})
+        return True
+

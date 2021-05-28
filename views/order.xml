@@ -14,6 +14,7 @@
             <field name="arch" type="xml">
               <form string="Order">
                 <header>
+                  <button type="object" name="calculate_total_order" string="Calculate Total"/>
                 </header>
                 <sheet>
                   <group>
