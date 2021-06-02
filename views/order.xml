@@ -15,6 +15,9 @@
               <form string="Order">
                 <header>
                   <button type="object" name="calculate_total_order" string="Calculate Total"/>
+                    <button name="%(hotel_management.action_view_discount_wizard_restaurant)d" string="Give Discount"
+                      type="action" class="btn-primary"/>
+
                 </header>
                 <sheet>
                   <group>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+          <record id="view_discount_wiz_form" model="ir.ui.view">
+            <field name="name">discount.wizard.form</field>
+            <field name="model">discount.wizard</field>
+            <field name="arch" type="xml">
+              <form string="Discount Wizard">
+                <sheet>
+                  <group>
+                    <field name="percent"/>
+                  </group>
+                </sheet>
+                <footer>
+                  <button type="object" name="make_discount" string="Give Discount"/>
+                </footer>
+              </form>
+            </field>
+          </record>
+          
+          <record id="action_view_discount_wizard_restaurant" model="ir.actions.act_window">
+            <field name="name">Give Discount</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">discount.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field><!--Target new will open the form in new window-->
+            <!-- TODO: check if we need this -->
+            <!-- Binding model means on which model this wizard is to be
+                 called-->
+            <field name="binding_model_id" ref="hotel_management.model_restaurant_order" />
+            <!--<field name="binding_view_types">list</field>-->
+        </record>
+
+        </odoo>

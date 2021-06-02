@@ -10,6 +10,7 @@
     'depends': ['base'],
     'data': [
         'security/ir.model.access.csv',
+        'wizard/discount.xml',
         'views/hotel.xml',
         'views/order.xml'
     ],
