@@ -21,12 +21,14 @@ class DiscountWizard(models.TransientModel):
         print('self.env.context', self.env.context)
         discount_percent=self.percent
         #browse method takes the id and creates the record object 
-        order=self.env['restaurant.order'].browse(active_id)
-        print('order+++++',order)
-        total=order.order_total
-        discount= total*discount_percent/100
-        discounted_amount=total-discount
-        order.write({'order_total':discounted_amount})
+        # browse method can take single or list of ids
+        orders=self.env['restaurant.order'].browse(active_ids)
+        print('orders+++++',orders)
+        for order in orders:
+            total=order.order_total
+            discount= total*discount_percent/100
+            discounted_amount=total-discount
+            order.write({'order_total':discounted_amount})
 
 
 
